@@ -1,7 +1,7 @@
 # GeoServer MCP Server
 
 <div align="center">
-  <img src="docs/images/geoerver-mcp.png" alt="GeoServer MCP Server Logo" width="200"/>
+  <img src="docs/images/geoserver-mcp.png" alt="GeoServer MCP Server Logo" width="400"/>
 </div>
 
 A Model Context Protocol (MCP) server implementation that connects Large Language Models (LLMs) to the GeoServer REST API, enabling AI assistants to interact with geospatial data and services.
