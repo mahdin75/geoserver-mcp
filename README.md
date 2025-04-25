@@ -60,7 +60,7 @@
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/geoserver-mcp.git
+git clone https://github.com/mahdin75/geoserver-mcp.git
 cd geoserver-mcp
 ```
 
