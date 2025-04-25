@@ -6,6 +6,10 @@
 
 A Model Context Protocol (MCP) server implementation that connects Large Language Models (LLMs) to the GeoServer REST API, enabling AI assistants to interact with geospatial data and services.
 
+<a href="https://glama.ai/mcp/servers/@mahdin75/geoserver-mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@mahdin75/geoserver-mcp/badge" alt="GeoServer Server MCP server" />
+</a>
+
 ## 🚀 Features
 
 - 🔍 Query and manipulate GeoServer workspaces, layers, and styles
