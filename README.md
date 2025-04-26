@@ -235,6 +235,7 @@ Parameters: {
 
 ## 🔮 Planned Features
 
+- [ ] Add Dokerfile
 - [ ] Coverage and raster data management
 - [ ] Security and access control
 - [ ] Advanced styling capabilities
