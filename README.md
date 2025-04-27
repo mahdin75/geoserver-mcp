@@ -25,7 +25,7 @@ A Model Context Protocol (MCP) server implementation that connects Large Languag
 - [Features](#-features)
 - [Prerequisites](#-prerequisites)
 - [Installation](#️-installation)
-  - [Docker Installation](#️-installation-docker)
+  <!-- - [Docker Installation](#️-installation-docker) -->
   - [pip Installation](#️-installation-pip)
   - [Development Installation](#️-development-installation)
 - [Available Tools](#️-available-tools)
@@ -63,7 +63,7 @@ A Model Context Protocol (MCP) server implementation that connects Large Languag
 
 Choose the installation method that best suits your needs:
 
-### 🛠️ Installation (Docker)
+<!-- ### 🛠️ Installation (Docker)
 
 The Docker installation is the quickest and most isolated way to run the GeoServer MCP server. It's ideal for:
 
@@ -101,7 +101,7 @@ If you are using Cursor, Create `.cursor/mcp.json`
     }
   }
 }
-```
+``` -->
 
 ### 🛠️ Installation (pip)
 
@@ -124,14 +124,12 @@ pip install uv
 
 ```bash
 uv venv --python=3.10
-source .venv/bin/activate
 ```
 
 **Windows PowerShell:**
 
 ```bash
 uv venv --python=3.10
-.\.venv\Scripts\activate
 ```
 
 3. Install the package using pip:
@@ -160,105 +158,35 @@ $env:GEOSERVER_PASSWORD="geoserver"
 
 5. Start the server:
 
-```bash
-geoserver-mcp
-```
-
-or
-
-```bash
-geoserver-mcp-server --url http://localhost:8080/geoserver --user admin --password geoserver --debug
-```
-
-6. Configure Clients:
-
-If you are using Claude Desktop, edit `claude_desktop_config.json`
-If you are using Cursor, Create `.cursor/mcp.json`
-
-```json
-{
-  "mcpServers": {
-    "geoserver-mcp": {
-      "command": "geoserver-mcp",
-      "args": [
-        "--url",
-        "http://localhost:8080/geoserver",
-        "--user",
-        "admin",
-        "--password",
-        "geoserver"
-      ]
-    }
-  }
-}
-```
-
-### 🛠️ Development installation
-
-The development installation is designed for contributors and developers who want to modify the codebase. This method is suitable for:
-
-- Developers contributing to the project
-- Users who need to modify the source code
-- Testing new features
-- Debugging and development purposes
-
-1. Install uv package manager.
-
-```bash
-pip install uv
-```
-
-2. Create the Virtual Environment (Python 3.10+):
-
-**Linux/Mac:**
-
-```bash
-uv venv --python=3.10
-source .venv/bin/activate
-```
-
-**Windows PowerShell:**
-
-```bash
-uv venv --python=3.10
-.\.venv\Scripts\activate
-```
-
-3. Install the package using pip:
-
-```bash
-uv pip install -e .
-```
-
-4. Configure GeoServer connection:
-
-**Linux/Mac:**
-
-```bash
-export GEOSERVER_URL="http://localhost:8080/geoserver"
-export GEOSERVER_USER="admin"
-export GEOSERVER_PASSWORD="geoserver"
-```
-
-**Windows PowerShell:**
-
-```powershell
-$env:GEOSERVER_URL="http://localhost:8080/geoserver"
-$env:GEOSERVER_USER="admin"
-$env:GEOSERVER_PASSWORD="geoserver"
-```
-
-5. Start the server:
-
 If you are going to use Claude desktop you don't need this step. For cursor or your own custom client you should run the following code.
 
+**Linux:**
+
 ```bash
+source .venv/bin/activate
+
 geoserver-mcp
 ```
 
 or
 
 ```bash
+source .venv/bin/activate
+
+geoserver-mcp --url http://localhost:8080/geoserver --user admin --password geoserver --debug
+```
+
+**Windows PowerShell:**
+
+```bash
+.\.venv\Scripts\activate
+geoserver-mcp
+```
+
+or
+
+```bash
+.\.venv\Scripts\activate
 geoserver-mcp --url http://localhost:8080/geoserver --user admin --password geoserver --debug
 ```
 
@@ -293,7 +221,131 @@ If you are using Cursor, Create `.cursor/mcp.json`
 {
   "mcpServers": {
     "geoserver-mcp": {
-      "command": "/path/to/geoserver-mcp/.venv/Scripts/geoserver-mcp",
+      "command": "/path/to/geoserver-mcp/.venv/bin/geoserver-mcp",
+      "args": [
+        "--url",
+        "http://localhost:8080/geoserver",
+        "--user",
+        "admin",
+        "--password",
+        "geoserver"
+      ]
+    }
+  }
+}
+```
+
+### 🛠️ Development installation
+
+The development installation is designed for contributors and developers who want to modify the codebase. This method is suitable for:
+
+- Developers contributing to the project
+- Users who need to modify the source code
+- Testing new features
+- Debugging and development purposes
+
+1. Install uv package manager.
+
+```bash
+pip install uv
+```
+
+2. Create the Virtual Environment (Python 3.10+):
+
+```bash
+uv venv --python=3.10
+```
+
+3. Install the package using pip:
+
+```bash
+uv pip install -e .
+```
+
+4. Configure GeoServer connection:
+
+**Linux/Mac:**
+
+```bash
+export GEOSERVER_URL="http://localhost:8080/geoserver"
+export GEOSERVER_USER="admin"
+export GEOSERVER_PASSWORD="geoserver"
+```
+
+**Windows PowerShell:**
+
+```powershell
+$env:GEOSERVER_URL="http://localhost:8080/geoserver"
+$env:GEOSERVER_USER="admin"
+$env:GEOSERVER_PASSWORD="geoserver"
+```
+
+5. Start the server:
+
+If you are going to use Claude desktop you don't need this step. For cursor or your own custom client you should run the following code.
+
+**Linux:**
+
+```bash
+source .venv/bin/activate
+
+geoserver-mcp
+```
+
+or
+
+```bash
+source .venv/bin/activate
+
+geoserver-mcp --url http://localhost:8080/geoserver --user admin --password geoserver --debug
+```
+
+**Windows PowerShell:**
+
+```bash
+.\.venv\Scripts\activate
+geoserver-mcp
+```
+
+or
+
+```bash
+.\.venv\Scripts\activate
+geoserver-mcp --url http://localhost:8080/geoserver --user admin --password geoserver --debug
+```
+
+6. Configure Clients:
+
+If you are using Claude Desktop, edit `claude_desktop_config.json`
+If you are using Cursor, Create `.cursor/mcp.json`
+
+**Windows:**
+
+```json
+{
+  "mcpServers": {
+    "geoserver-mcp": {
+      "command": "C:\\path\\to\\geoserver-mcp\\.venv\\Scripts\\geoserver-mcp",
+      "args": [
+        "--url",
+        "http://localhost:8080/geoserver",
+        "--user",
+        "admin",
+        "--password",
+        "geoserver"
+      ]
+    }
+  }
+}
+```
+
+**Linux:**
+
+```json
+{
+  "mcpServers": {
+    "geoserver-mcp": {
+      "command": "/path/to/geoserver-mcp/.venv/bin/geoserver-mcp",
       "args": [
         "--url",
         "http://localhost:8080/geoserver",
@@ -446,4 +498,3 @@ For support, please Open an [issue](https://github.com/mahdin75/geoserver-mcp/is
     <img src="https://mcp.so/logo.png" alt="MCP.so Badge" width="150"/>
   </a>
 </div>
-```
