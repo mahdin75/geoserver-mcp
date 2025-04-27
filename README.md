@@ -10,9 +10,9 @@ A Model Context Protocol (MCP) server implementation that connects Large Languag
   <img src="docs/images/geoserver-mcp.png" alt="GeoServer MCP Server Logo" width="400"/>
 </div>
 
-> ![Alpha](https://img.shields.io/badge/Version-0.1.1--Alpha-green)
+> ![Alpha](https://img.shields.io/badge/Version-0.2.0--Alpha-green)
 >
-> Version 0.2.0 (Alpha) is under active development and will be released shortly. We are open to contributions and welcome developers to join us in building this project.
+> Version 0.3.0 (Alpha) is under active development and will be released shortly. We are open to contributions and welcome developers to join us in building this project.
 
 ## 🎥 Demo
 
