@@ -237,7 +237,7 @@ geoserver-mcp
 or
 
 ```bash
-geoserver-mcp-server --url http://localhost:8080/geoserver --user admin --password geoserver --debug
+geoserver-mcp --url http://localhost:8080/geoserver --user admin --password geoserver --debug
 ```
 
 6. Configure Clients:
