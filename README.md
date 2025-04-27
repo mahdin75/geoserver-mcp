@@ -1,30 +1,23 @@
 # GeoServer MCP Server
 
-<a href="https://badge.mcpx.dev?type=server 'MCP Server'">
-    <img src="https://badge.mcpx.dev?type=server" title="MCP Server"/>
-</a>
 <p align="center">
-  A Model Context Protocol (MCP) server implementation that connects Large Language Models (LLMs) to the GeoServer REST API, enabling AI assistants to interact with geospatial data and services.
-</p>
+  <img src="https://badge.mcpx.dev?type=server" title="MCP Server"/>
+A Model Context Protocol (MCP) server implementation that connects Large Language Models (LLMs) to the GeoServer REST API, enabling AI assistants to interact with geospatial data and services.
 
-> ![Alpha](https://img.shields.io/badge/Version-0.1.0--Alpha-green)
->
-> Version 0.2.0 (Alpha) is under active development and will be released shortly. We are open to contributions and welcome developers to join us in building this project.
+</p>
 
 <div align="center">
   <img src="docs/images/geoserver-mcp.png" alt="GeoServer MCP Server Logo" width="400"/>
 </div>
 
-## 🏆 Badges & Indexes
+> ![Alpha](https://img.shields.io/badge/Version-0.1.0--Alpha-green)
+>
+> Version 0.2.0 (Alpha) is under active development and will be released shortly. We are open to contributions and welcome developers to join us in building this project.
+
+## 🎥 Demo
 
 <div align="center">
-  <a href="https://glama.ai/mcp/servers/@mahdin75/geoserver-mcp">
-    <img width="380" height="200" src="https://glama.ai/mcp/servers/@mahdin75/geoserver-mcp/badge" alt="GeoServer Server MCP server" />
-  </a>
-  <br/><br/><br/>
-  <a href="https://mcp.so/server/Geoserver%20MCP%20Server/mahdin75">
-    <img src="https://mcp.so/logo.png" alt="MCP.so Badge" width="150"/>
-  </a>
+  <img src="demo/demo.gif" alt="GeoServer MCP Server Demo" width="800"/>
 </div>
 
 ## 📋 Table of Contents
@@ -39,13 +32,17 @@
   - [Workspace and Layer Management](#️-workspace-and-layer-management)
   - [Data Operations](#️-data-operations)
   - [Visualization](#️-visualization)
-- [Example Usage](#-example-usage)
 - [Client Development](#️-client-development)
+  - [List Workspaces](#list-workspaces)
+  - [Get Layer Information](#get-layer-information)
+  - [Query Features](#query-features)
+  - [Generate Map](#generate-map)
 - [Planned Features](#-planned-features)
 - [Contributing](#-contributing)
 - [License](#-license)
 - [Related Projects](#-related-projects)
 - [Support](#-support)
+- [Badges](#-badges)
 
 ## 🚀 Features
 
@@ -295,7 +292,18 @@ If you are using Cursor, Create `.cursor/mcp.json`
 | `create_style` | Define new SLD styles           |
 | `apply_style`  | Apply existing styles to layers |
 
-## 📚 Example Usage
+## 🛠️ Client Development
+
+If you're planning to develop your own client to interact with the GeoServer MCP server, you can find inspiration in the example client implementation at `examples/client.py`. This example demonstrates:
+
+- How to establish a connection with the MCP server
+- How to send requests and handle responses
+- Basic error handling and connection management
+- Example usage of various tools and operations
+
+The example client serves as a good starting point for understanding the protocol and implementing your own client applications.
+
+Also, here is the example usgage:
 
 ### List Workspaces
 
@@ -304,8 +312,6 @@ Tool: list_workspaces
 Parameters: {}
 Response: ["default", "demo", "topp", "tiger", "sf"]
 ```
-
-![List of GeoServer Workspaces](demo/list_workspaces.png)
 
 ### Get Layer Information
 
@@ -343,17 +349,6 @@ Parameters: {
 }
 ```
 
-## 🛠️ Client Development
-
-If you're planning to develop your own client to interact with the GeoServer MCP server, you can find inspiration in the example client implementation at `examples/client.py`. This example demonstrates:
-
-- How to establish a connection with the MCP server
-- How to send requests and handle responses
-- Basic error handling and connection management
-- Example usage of various tools and operations
-
-The example client serves as a good starting point for understanding the protocol and implementing your own client applications.
-
 ## 🔮 Planned Features
 
 - [ ] Coverage and raster data management
@@ -387,3 +382,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 For support, please Open an [issue](https://github.com/mahdin75/geoserver-mcp/issues)
+
+## 🏆 Badges
+
+<div align="center">
+  <a href="https://glama.ai/mcp/servers/@mahdin75/geoserver-mcp">
+    <img width="380" height="200" src="https://glama.ai/mcp/servers/@mahdin75/geoserver-mcp/badge" alt="GeoServer Server MCP server" />
+  </a>
+  <br/><br/><br/>
+  <a href="https://mcp.so/server/Geoserver%20MCP%20Server/mahdin75">
+    <img src="https://mcp.so/logo.png" alt="MCP.so Badge" width="150"/>
+  </a>
+</div>

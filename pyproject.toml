@@ -28,7 +28,7 @@ dependencies = [
 ]
 
 [project.scripts]
-geoserver-mcp = "geoserver_mcp_server.main:main"
+geoserver-mcp = "geoserver_mcp.main:main"
 
 [tool.hatch.metadata]
 allow-direct-references = true
