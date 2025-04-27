@@ -7,6 +7,10 @@
   A Model Context Protocol (MCP) server implementation that connects Large Language Models (LLMs) to the GeoServer REST API, enabling AI assistants to interact with geospatial data and services.
 </p>
 
+> ![Pre-Alpha](https://img.shields.io/badge/Version-Pre--Alpha-orange)
+>
+> Version 0.1.0 (Alpha) is under active development and will be released shortly. We are open to contributions and welcome developers to join us in building this project.
+
 <div align="center">
   <img src="docs/images/geoserver-mcp.png" alt="GeoServer MCP Server Logo" width="400"/>
 </div>
