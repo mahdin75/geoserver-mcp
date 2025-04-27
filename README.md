@@ -17,7 +17,7 @@ A Model Context Protocol (MCP) server implementation that connects Large Languag
 ## 🎥 Demo
 
 <div align="center">
-  <img src="demo/demo.gif" alt="GeoServer MCP Server Demo" width="800"/>
+  <img src="demo/list_workspaces.png" alt="GeoServer MCP Server Demo" width="400"/>
 </div>
 
 ## 📋 Table of Contents
@@ -120,8 +120,18 @@ pip install uv
 
 2. Create the Virtual Environment (Python 3.10+):
 
+**Linux/Mac:**
+
 ```bash
 uv venv --python=3.10
+source .venv/bin/activate
+```
+
+**Windows PowerShell:**
+
+```bash
+uv venv --python=3.10
+.\.venv\Scripts\activate
 ```
 
 3. Install the package using pip:
@@ -200,8 +210,18 @@ pip install uv
 
 2. Create the Virtual Environment (Python 3.10+):
 
+**Linux/Mac:**
+
 ```bash
 uv venv --python=3.10
+source .venv/bin/activate
+```
+
+**Windows PowerShell:**
+
+```bash
+uv venv --python=3.10
+.\.venv\Scripts\activate
 ```
 
 3. Install the package using pip:
@@ -230,6 +250,8 @@ $env:GEOSERVER_PASSWORD="geoserver"
 
 5. Start the server:
 
+If you are going to use Claude desktop you don't need this step. For cursor or your own custom client you should run the following code.
+
 ```bash
 geoserver-mcp
 ```
@@ -245,11 +267,33 @@ geoserver-mcp --url http://localhost:8080/geoserver --user admin --password geos
 If you are using Claude Desktop, edit `claude_desktop_config.json`
 If you are using Cursor, Create `.cursor/mcp.json`
 
+**Windows:**
+
 ```json
 {
   "mcpServers": {
     "geoserver-mcp": {
-      "command": "geoserver-mcp",
+      "command": "C:\\path\\to\\geoserver-mcp\\.venv\\Scripts\\geoserver-mcp",
+      "args": [
+        "--url",
+        "http://localhost:8080/geoserver",
+        "--user",
+        "admin",
+        "--password",
+        "geoserver"
+      ]
+    }
+  }
+}
+```
+
+**Linux:**
+
+```json
+{
+  "mcpServers": {
+    "geoserver-mcp": {
+      "command": "/path/to/geoserver-mcp/.venv/Scripts/geoserver-mcp",
       "args": [
         "--url",
         "http://localhost:8080/geoserver",
@@ -308,45 +352,53 @@ Also, here is the example usgage:
 ### List Workspaces
 
 ```
+
 Tool: list_workspaces
 Parameters: {}
 Response: ["default", "demo", "topp", "tiger", "sf"]
+
 ```
 
 ### Get Layer Information
 
 ```
+
 Tool: get_layer_info
 Parameters: {
-  "workspace": "topp",
-  "layer": "states"
+"workspace": "topp",
+"layer": "states"
 }
+
 ```
 
 ### Query Features
 
 ```
+
 Tool: query_features
 Parameters: {
-  "workspace": "topp",
-  "layer": "states",
-  "filter": "PERSONS > 10000000",
-  "properties": ["STATE_NAME", "PERSONS"]
+"workspace": "topp",
+"layer": "states",
+"filter": "PERSONS > 10000000",
+"properties": ["STATE_NAME", "PERSONS"]
 }
+
 ```
 
 ### Generate Map
 
 ```
+
 Tool: generate_map
 Parameters: {
-  "layers": ["topp:states"],
-  "styles": ["population"],
-  "bbox": [-124.73, 24.96, -66.97, 49.37],
-  "width": 800,
-  "height": 600,
-  "format": "png"
+"layers": ["topp:states"],
+"styles": ["population"],
+"bbox": [-124.73, 24.96, -66.97, 49.37],
+"width": 800,
+"height": 600,
+"format": "png"
 }
+
 ```
 
 ## 🔮 Planned Features
@@ -394,3 +446,4 @@ For support, please Open an [issue](https://github.com/mahdin75/geoserver-mcp/is
     <img src="https://mcp.so/logo.png" alt="MCP.so Badge" width="150"/>
   </a>
 </div>
+```
