@@ -27,7 +27,7 @@ A Model Context Protocol (MCP) server implementation that connects Large Languag
 - [Installation](#️-installation)
   - [Docker Installation](#️-installation-docker)
   - [pip Installation](#️-installation-pip)
-  - [Development Installation](#️-installation-for-development)
+  - [Development Installation](#️-development-installation)
 - [Available Tools](#️-available-tools)
   - [Workspace and Layer Management](#️-workspace-and-layer-management)
   - [Data Operations](#️-data-operations)
@@ -183,7 +183,7 @@ If you are using Cursor, Create `.cursor/mcp.json`
 }
 ```
 
-### 🛠️ Installation (For Development)
+### 🛠️ Development installation
 
 The development installation is designed for contributors and developers who want to modify the codebase. This method is suitable for:
 
