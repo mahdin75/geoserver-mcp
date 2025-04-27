@@ -7,7 +7,7 @@ A Model Context Protocol (MCP) server implementation that connects Large Languag
 </p>
 
 <div align="center">
-  <img src="docs/images/geoserver-mcp.png" alt="GeoServer MCP Server Logo" width="400"/>
+  <img src="docs/geoserver-mcp.png" alt="GeoServer MCP Server Logo" width="400"/>
 </div>
 
 > ![Alpha](https://img.shields.io/badge/Version-0.2.0--Alpha-green)
@@ -17,7 +17,7 @@ A Model Context Protocol (MCP) server implementation that connects Large Languag
 ## 🎥 Demo
 
 <div align="center">
-  <img src="demo/list_workspaces.png" alt="GeoServer MCP Server Demo" width="400"/>
+  <img src="docs/demo/list_workspaces.png" alt="GeoServer MCP Server Demo" width="400"/>
 </div>
 
 ## 📋 Table of Contents
