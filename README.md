@@ -75,8 +75,8 @@ The Docker installation is the quickest and most isolated way to run the GeoServ
 1. Run geoserver-mcp:
 
 ```bash
-docker pull geoserver-mcp
-docker run -d geoserver-mcp
+docker pull mahdin75/geoserver-mcp
+docker run -d mahdin75/geoserver-mcp
 ```
 
 2. Configure the clients:
@@ -89,14 +89,19 @@ If you are using Cursor, Create `.cursor/mcp.json`
   "mcpServers": {
     "geoserver-mcp": {
       "command": "docker",
-      "args": ["run", "-i", "--rm", "geoserver-mcp"],
-      "env": [
-        "GEOSERVER_URL",
-        "http://localhost:8080/geoserver",
-        "GEOSERVER_USER",
-        "admin",
-        "GEOSERVER_PASSWORD",
-        "geoserver"
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "GEOSERVER_URL=http://localhost:8080/geoserver",
+        "-e",
+        "GEOSERVER_USER=admin",
+        "-e",
+        "GEOSERVER_PASSWORD=geoserver",
+        "-p",
+        "8080:8080",
+        "mahdin75/geoserver-mcp"
       ]
     }
   }
