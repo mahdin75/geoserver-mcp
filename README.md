@@ -12,7 +12,7 @@ A Model Context Protocol (MCP) server implementation that connects Large Languag
 
 > ![Alpha](https://img.shields.io/badge/Version-0.2.0--Alpha-green)
 >
-> Version 0.3.0 (Alpha) is under active development and will be released shortly. We are open to contributions and welcome developers to join us in building this project.
+> Version 0.4.0 (Alpha) is under active development and will be released shortly. We are open to contributions and welcome developers to join us in building this project.
 
 ## 🎥 Demo
 
@@ -25,7 +25,7 @@ A Model Context Protocol (MCP) server implementation that connects Large Languag
 - [Features](#-features)
 - [Prerequisites](#-prerequisites)
 - [Installation](#️-installation)
-  <!-- - [Docker Installation](#️-installation-docker) -->
+  - [Docker Installation](#️-installation-docker)
   - [pip Installation](#️-installation-pip)
   - [Development Installation](#️-development-installation)
 - [Available Tools](#️-available-tools)
@@ -63,7 +63,7 @@ A Model Context Protocol (MCP) server implementation that connects Large Languag
 
 Choose the installation method that best suits your needs:
 
-<!-- ### 🛠️ Installation (Docker)
+### 🛠️ Installation (Docker)
 
 The Docker installation is the quickest and most isolated way to run the GeoServer MCP server. It's ideal for:
 
@@ -101,7 +101,7 @@ If you are using Cursor, Create `.cursor/mcp.json`
     }
   }
 }
-``` -->
+```
 
 ### 🛠️ Installation (pip)
 
