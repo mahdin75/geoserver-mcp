@@ -1,0 +1,34 @@
+# Smithery configuration file: https://smithery.ai/docs/build/project-config
+
+startCommand:
+  type: stdio
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({ command: 'geoserver-mcp', args: ['--url', config.url, '--user', config.user, '--password', config.password].concat(config.debug ? ['--debug'] : []), env: { } })
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - url
+      - user
+      - password
+    properties:
+      url:
+        type: string
+        description: GeoServer REST API base URL, e.g. http://localhost:8080/geoserver
+      user:
+        type: string
+        description: GeoServer username
+      password:
+        type: string
+        description: GeoServer password
+      debug:
+        type: boolean
+        default: false
+        description: Enable debug logging
+  exampleConfig:
+    url: http://localhost:8080/geoserver
+    user: admin
+    password: geoserver
+    debug: false
