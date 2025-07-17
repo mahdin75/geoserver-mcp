@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/mahdin75-geoserver-mcp-badge.png)](https://mseep.ai/app/mahdin75-geoserver-mcp)
+
 # GeoServer MCP Server
 
 <p align="center">
