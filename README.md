@@ -661,3 +661,8 @@ For support, please Open an [issue](https://github.com/mahdin75/geoserver-mcp/is
 [![MseeP.ai Security Assessment Badge](https://mseep.net/pr/mahdin75-geoserver-mcp-badge.png)](https://mseep.ai/app/mahdin75-geoserver-mcp)
 
 </div>
+
+## Hosted deployment
+
+A hosted deployment is available on [Fronteir AI](https://fronteir.ai/mcp/mahdin75-geoserver-mcp).
+
