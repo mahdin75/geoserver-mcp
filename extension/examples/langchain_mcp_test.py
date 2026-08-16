@@ -19,6 +19,7 @@ import base64
 import json
 import os
 import sys
+import uuid
 from typing import Any
 
 
@@ -156,7 +157,14 @@ def openrouter_chat_model(model: str):
 
 async def run_agent(url: str, user: str, password: str, transport: str, model: str) -> None:
     _, tools = await load_tools(url, user, password, transport)
-    prompt = "List the GeoServer workspaces, then list layers in the first workspace."
+    workspace = f"mcp_{uuid.uuid4().hex[:8]}"
+    prompt = (
+        f"List the GeoServer workspaces. "
+        f"Then create a new workspace named {workspace}. "
+        f"List the workspaces again to confirm {workspace} exists. "
+        f"Then list layers in the first workspace that already existed before the create."
+    )
+    print(f"Agent prompt will create workspace {workspace!r}")
     llm = openrouter_chat_model(model)
     print(f"Running LangChain agent via OpenRouter model={model!r}")
     try:
@@ -200,6 +208,37 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def format_exception(exc: BaseException) -> str:
+    parts = [f"{type(exc).__name__}: {exc}"]
+    sub = getattr(exc, "exceptions", None)
+    if sub:
+        for inner in sub:
+            parts.append("  " + format_exception(inner).replace("\n", "\n  "))
+    cause = exc.__cause__ or exc.__context__
+    if cause is not None and cause is not exc:
+        parts.append("caused by " + format_exception(cause))
+    return "\n".join(parts)
+
+
+def hint_for(exc: BaseException) -> str:
+    name = type(exc).__name__
+    text = str(exc).lower()
+    if name in {"APIConnectionError", "ConnectError", "ConnectTimeout"} or "connection error" in text:
+        return (
+            "The GeoServer MCP smoke test already passed. --agent talks to OpenRouter, "
+            "and this Python (3.10.0 / OpenSSL 1.1.1l) cannot complete HTTPS to Cloudflare. "
+            "Use a newer Python 3.10.11+ or 3.11/3.12 venv, or skip --agent.\n"
+        )
+    if isinstance(exc, AssertionError):
+        return ""
+    if "503" in text or "404" in text or "connection" in text:
+        return (
+            "If GeoServer itself failed: use 2.28.x with gs-mcp, and prefer "
+            "http://127.0.0.1:8080/geoserver/mcp (Python localhost can hit IPv6 and get 503).\n"
+        )
+    return ""
+
+
 async def main() -> int:
     args = parse_args()
     try:
@@ -210,16 +249,8 @@ async def main() -> int:
             else:
                 await run_agent(args.url, args.user, args.password, args.transport, args.model)
     except Exception as exc:
-        hint = ""
-        if not isinstance(exc, AssertionError):
-            hint = (
-                "Use GeoServer 2.28.x with gs-mcp installed; "
-                "the 2.20.x Windows service will not work.\n"
-            )
-        print(
-            f"LangChain smoke test failed.\n{hint}{type(exc).__name__}: {exc}",
-            file=sys.stderr,
-        )
+        hint = hint_for(exc)
+        print(f"LangChain smoke test failed.\n{hint}{format_exception(exc)}", file=sys.stderr)
         return 1
     return 0
 
