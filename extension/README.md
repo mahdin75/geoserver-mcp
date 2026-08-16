@@ -250,6 +250,15 @@ curl -s -u admin:geoserver \
 
 ### LangChain
 
+A runnable smoke test lives at [`examples/langchain_mcp_test.py`](examples/langchain_mcp_test.py). It loads the MCP tools through `langchain-mcp-adapters` and calls `list_workspaces` / `list_layers` (no LLM required).
+
+```bash
+pip install -r extension/examples/requirements-langchain.txt
+python extension/examples/langchain_mcp_test.py
+```
+
+Optional flags: `--url`, `--user`, `--password`, `--workspace`. Pass `--agent` (and set `OPENROUTER_API_KEY`) to also run a LangChain agent through OpenRouter. `--model` defaults to `openai/gpt-4o-mini`.
+
 ```python
 from langchain_mcp_adapters.client import MultiServerMCPClient
 
@@ -265,7 +274,7 @@ client = MultiServerMCPClient(
 tools = await client.get_tools()
 ```
 
-Adapter package names and connection dict keys change across `langchain-mcp-adapters` releases. If `transport` is rejected, check that version's Streamable HTTP client docs. The GeoServer URL and HTTP Basic header stay the same.
+Adapter package names and connection dict keys change across `langchain-mcp-adapters` releases. If `transport` is rejected, try `http` instead of `streamable_http`, or pass `--transport http` to the smoke test. The GeoServer URL and HTTP Basic header stay the same.
 
 ### LangGraph
 
@@ -354,11 +363,18 @@ Covered:
 
 1. Install the JAR as above.
 2. Run the `curl` initialize / `tools/list` / `list_layers` sequence.
-3. Confirm a non-admin user only sees permitted layers.
-4. Confirm `GET /geoserver/mcp` returns 405.
-5. Confirm unauthenticated POST returns 401 while `mcp.requireAuthentication=true`.
+3. Or run the LangChain smoke test:
 
-A full Testcontainers GeoServer run is not part of the default `mvn test` lifecycle. Use a 2.28 install or Docker image, copy the JAR into `WEB-INF/lib`, and restart.
+```bash
+pip install -r extension/examples/requirements-langchain.txt
+python extension/examples/langchain_mcp_test.py
+```
+
+4. Confirm a non-admin user only sees permitted layers.
+5. Confirm `GET /geoserver/mcp` returns 405.
+6. Confirm unauthenticated POST returns 401 while `mcp.requireAuthentication=true`.
+
+A full Testcontainers GeoServer run is not part of the default `mvn test` lifecycle. Use a 2.28 install or Docker image, copy the JAR into `WEB-INF/lib`, and restart. This script will fail against GeoServer 2.20.x.
 
 ## Versioning
 
