@@ -105,6 +105,8 @@ The zip contains the JAR plus license/example files. Jackson is not bundled; Geo
 
 This is the same install method GeoServer documents for other extensions: matching series, JARs in `WEB-INF/lib`, restart.
 
+> **Note:** Do not copy this JAR into an older GeoServer such as **2.20.x**. Those installs typically run **Java 11**. This plugin is compiled for **Java 17** (class file version 61) and GeoServer **2.28.x**. Putting it in `WEB-INF/lib` on 2.20.4 makes Spring fail to start the webapp: `/geoserver/web/` returns HTTP **503 Service Unavailable**, and the log shows `UnsupportedClassVersionError` (`class file version 61.0` vs runtime `55.0`). Remove the JAR from `WEB-INF/lib` and restart to recover. Test the extension on a separate GeoServer 2.28.x instance; leave an existing 2.20.x install untouched.
+
 ## MCP endpoint
 
 | | |
