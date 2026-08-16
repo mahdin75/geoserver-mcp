@@ -90,7 +90,7 @@ See [Installation](#️-installation) below.
 
 ### GeoServer Extension
 
-Install the GeoServer MCP Extension directly into GeoServer and expose a remote MCP endpoint at `/geoserver/mcp`. No Python sidecar is required. This is a proof of concept for GeoServer **2.28.x**.
+Install the GeoServer MCP Extension directly into GeoServer and expose a remote MCP endpoint at `/geoserver/mcp`. No Python sidecar is required. Targets GeoServer **2.28.x**.
 
 See [`extension/README.md`](extension/README.md) for architecture, installation, configuration, security, and client examples.
 

@@ -26,6 +26,7 @@
     <maven.compiler.release>17</maven.compiler.release>
     <geoserver.version>2.28.5</geoserver.version>
     <geoserver.series>2.28</geoserver.series>
+    <geotools.version>34.5</geotools.version>
     <jackson.version>2.17.2</jackson.version>
     <junit.version>5.11.4</junit.version>
     <mockito.version>5.15.2</mockito.version>
@@ -69,6 +70,54 @@
       <groupId>org.geoserver</groupId>
       <artifactId>gs-platform</artifactId>
       <version>${geoserver.version}</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-api</artifactId>
+      <version>${geotools.version}</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-main</artifactId>
+      <version>${geotools.version}</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-metadata</artifactId>
+      <version>${geotools.version}</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-cql</artifactId>
+      <version>${geotools.version}</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>

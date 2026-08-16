@@ -18,6 +18,11 @@ public interface McpTool {
 
     Object call(JsonNode arguments) throws McpToolException;
 
+    /** Write tools are hidden and rejected when {@code mcp.allowWrites} is false. */
+    default boolean write() {
+        return false;
+    }
+
     default JsonNode missingOrEmpty(JsonNode arguments) {
         return arguments == null || arguments.isNull() ? McpJson.mapper().createObjectNode() : arguments;
     }

@@ -24,6 +24,7 @@ class ExtensionDescriptorTest {
             assertTrueContains(xml, "mcpCatalogAccess");
             assertTrueContains(xml, "org.geoservermcp.catalog.GeoServerCatalogAccess");
             assertTrueContains(xml, "ref=\"catalog\"");
+            assertTrueContains(xml, "ref=\"geoServer\"");
             assertTrueContains(xml, "gs-mcp-status");
             assertTrueContains(xml, "org.geoserver.platform.ModuleStatusImpl");
         }

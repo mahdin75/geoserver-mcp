@@ -141,6 +141,8 @@ mcp.requireAuthentication=true
 mcp.cors.enabled=false
 mcp.cors.allowOrigin=*
 mcp.maxListResults=1000
+mcp.maxFeatures=100
+mcp.allowWrites=true
 ```
 
 Environment variables and Java system properties override the file:
@@ -153,19 +155,22 @@ Environment variables and Java system properties override the file:
 | CORS | `mcp.cors.enabled` | `GEOSERVER_MCP_CORS_ENABLED` | `false` |
 | CORS origin | `mcp.cors.allowOrigin` | `GEOSERVER_MCP_CORS_ALLOW_ORIGIN` | `*` |
 | Max workspaces/layers per list | `mcp.maxListResults` | `GEOSERVER_MCP_MAX_LIST_RESULTS` | `1000` |
+| Max features per `query_features` | `mcp.maxFeatures` | `GEOSERVER_MCP_MAX_FEATURES` | `100` |
+| Catalog write tools | `mcp.allowWrites` | `GEOSERVER_MCP_ALLOW_WRITES` | `true` |
 
 Restart GeoServer after changing `mcp.properties`. Logging uses the GeoServer / `java.util.logging` category `org.geoservermcp`.
 
 ## Security
 
-This milestone is **read-only**. The extension does not expose:
+Write tools are on by default (`mcp.allowWrites=true`) so agents can create and edit catalog objects. They still go through the secured `catalog` bean. Set `mcp.allowWrites=false` to hide write tools from `tools/list` and reject `tools/call` for them.
 
-- GeoServer administration
+The extension does not expose:
+
+- GeoServer user/group administration
 - arbitrary REST passthrough
-- filesystem access
-- catalog writes or configuration changes
-- datastore credentials
-- user management
+- filesystem uploads (`create_shp_datastore`, `create_gpkg_datastore`)
+- catalog reload/reset
+- datastore connection secrets in tool results (passwords are redacted)
 - code execution
 
 ### Authentication
@@ -184,12 +189,7 @@ Anonymous users still only see layers and workspaces that GeoServer data securit
 
 Tools use the secured `catalog` bean (`SecureCatalogImpl`). Layer and workspace lists are filtered with the current Spring Security `Authentication`. A user who cannot see a layer in WMS/WFS will not see it through MCP.
 
-Required permissions for the proof-of-concept tools:
-
-| Tool | GeoServer permission |
-| --- | --- |
-| `list_workspaces` | Read access to the workspaces that should appear |
-| `list_layers` | Read access to the layers that should appear |
+Required permissions follow GeoServer data security. Reads need read access to the objects that should appear. Writes need the same catalog write permissions the user would need in the GeoServer UI / REST.
 
 Administrators can optionally add a dedicated authentication filter chain for `/mcp/**` in **Security → Authentication → Filter Chains**. That is not required for the default Basic-auth behavior.
 
@@ -299,12 +299,39 @@ agent = create_react_agent(model, tools)
 
 ## Implemented tools (0.1.0)
 
-| Tool | Python MCP | Java extension | Priority |
-| --- | --- | --- | --- |
-| `list_workspaces` | existing | implemented | P0 |
-| `list_layers` | existing | implemented | P0 |
+Tool names match the Python MCP server. Results are Catalog-structured JSON, not a replay of GeoServer REST XML/JSON. Connection parameters in datastore/coveragestore results have secrets redacted.
 
-Tool names and descriptions match the Python server. `list_workspaces` returns a JSON array of workspace name strings. `list_layers` accepts optional `workspace` and returns a JSON array of objects:
+### Read
+
+| Tool | Notes |
+| --- | --- |
+| `list_workspaces` | Workspace name strings |
+| `list_layers` | Optional `workspace`; objects with `name`, `workspace`, `prefixedName`, `enabled`, `type` |
+| `get_layer_info` | `workspace`, `layer` |
+| `query_features` | CQL `filter`, optional `properties`, `max_features` (capped by `mcp.maxFeatures`) |
+| `generate_map` | Returns a WMS GetMap URL (does not fetch the image) |
+| `get_datastores` / `get_datastore` | Connection secrets redacted |
+| `get_coveragestores` / `get_coveragestore` | Connection secrets redacted |
+| `get_layergroups` / `get_layergroup` | |
+| `get_featuretypes` / `get_feature_attribute` | |
+| `get_version` | GeoServer version string |
+
+### Write (gated by `mcp.allowWrites`)
+
+| Tool | Notes |
+| --- | --- |
+| `create_workspace` | Also creates the matching namespace |
+| `create_layer` | Publishes a feature type from an existing datastore |
+| `delete_resource` | `workspace`, `layer`, `datastore`, `style`, `coverage` |
+| `create_style` | SLD text; optional workspace |
+| `create_datastore` / `create_featurestore` | Same Catalog create; `params` is the connection map |
+| `create_coveragestore` / `delete_coveragestore` | |
+| `create_layergroup` / `add_layer_to_layergroup` / `remove_layer_from_layergroup` / `delete_layergroup` / `update_layergroup` | |
+| `publish_featurestore` | Publishes `params.nativeName` (or `table` / `name`) from an existing store |
+| `edit_featuretype` | `updates`: title, abstract, srs, enabled, advertised, nativeName |
+| `publish_style` | Sets the layer default style |
+
+`list_workspaces` returns a JSON array of workspace name strings. `list_layers` accepts optional `workspace` and returns a JSON array of objects:
 
 ```json
 [
@@ -320,26 +347,21 @@ Tool names and descriptions match the Python server. `list_workspaces` returns a
 
 The Python server currently forwards GeoServer REST payloads from `geoserver-rest`. The Java tool uses the Catalog API and returns this stable shape instead of replaying REST XML/JSON. Agents that only use tool names and the `workspace` argument can switch endpoints without changes. Agents that parse the exact REST document from Python `list_layers` will need to read `name` / `workspace` / `prefixedName`.
 
-## Future tool mapping
+## Not ported
 
-Do not treat this table as implemented. It is the planned compatibility map with the Python server.
+These Python tools stay out of the Java extension:
 
-| Tool | Python MCP | Java extension | Priority | Notes |
-| --- | --- | --- | --- | --- |
-| `list_workspaces` | existing | implemented | P0 | Catalog `getWorkspaces()` |
-| `list_layers` | existing | implemented | P0 | Catalog `getLayers()` |
-| `get_layer_info` | existing | planned | P0 | Catalog `LayerInfo` / `ResourceInfo` |
-| `query_features` | existing | planned | P1 | GeoTools `FeatureSource`, not HTTP WFS |
-| `generate_map` | existing | planned | P1 | WMS internals or a GetMap URL |
-| `get_datastores` / `get_datastore` | existing | planned | P1 | Catalog stores |
-| `get_coveragestores` / `get_coveragestore` | existing | planned | P1 | Catalog coverage stores |
-| `get_layergroups` / `get_layergroup` | existing | planned | P1 | Catalog layer groups |
-| `get_featuretypes` / `get_feature_attribute` | existing | planned | P1 | FeatureTypeInfo |
-| `get_version` / `get_status` | existing | planned | P1 | Read-only About/status |
-| `create_*` / `delete_*` / `publish_*` | existing | not planned for default | — | Writes stay out of the default extension |
-| `create_user` / `delete_user` / `reload_geoserver` | existing | will not port | — | Administration; too broad |
+| Tool | Reason |
+| --- | --- |
+| `create_user` / `delete_user` / `get_all_users` / `modify_user` / usergroups | User administration |
+| `reload_geoserver` / `reset_geoserver` | Process-wide admin |
+| `create_shp_datastore` / `create_gpkg_datastore` | Filesystem upload |
+| `publish_featurestore_sqlview` | SQL view publish |
+| `style_*` / categorized/classified SLD helpers | Python-only SLD generation |
+| `publish_time_dimension_to_coveragestore` / `update_service` | Service/config admin |
+| `get_manifest` / `get_status` / `get_system_status` | About/status REST |
 
-Write tools, if ever added, must be opt-in and still go through GeoServer security.
+Writes are opt-out (`mcp.allowWrites=false`) and still go through GeoServer security.
 
 ## Testing
 
@@ -354,7 +376,8 @@ Covered:
 
 - Spring `applicationContext.xml` is present and declares the filter
 - MCP `initialize`, `tools/list`, `tools/call`
-- `list_layers` / `list_workspaces`
+- `list_layers` / `list_workspaces` and the rest of the registered catalog tools
+- write tools hidden/rejected when `mcp.allowWrites=false`
 - invalid JSON, unknown methods, unknown tools
 - authentication gate (anonymous vs authenticated)
 - catalog workspace filter and unknown workspace errors
@@ -400,7 +423,7 @@ GNU GPL v2.0 or later. GeoServer is GPL, and this module links GeoServer APIs. T
 
 ## Limitations and future work
 
-- Proof of concept: two read-only catalog tools.
+- Catalog read and write tools (writes gated by `mcp.allowWrites`).
 - No MCP resources, prompts, or SSE GET stream.
 - No GeoServer 3.0 / Jakarta build.
 - No web admin page; configuration is properties / env.

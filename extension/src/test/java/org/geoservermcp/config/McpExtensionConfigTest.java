@@ -17,6 +17,8 @@ class McpExtensionConfigTest {
         assertTrue(config.isRequireAuthentication());
         assertFalse(config.isCorsEnabled());
         assertEquals(1000, config.getMaxListResults());
+        assertEquals(100, config.getMaxFeatures());
+        assertTrue(config.isAllowWrites());
         assertEquals("2025-03-26", config.negotiateProtocolVersion("nope"));
         assertEquals("2025-11-25", config.negotiateProtocolVersion("2025-11-25"));
     }
@@ -29,6 +31,8 @@ class McpExtensionConfigTest {
         properties.setProperty("mcp.requireAuthentication", "false");
         properties.setProperty("mcp.cors.enabled", "true");
         properties.setProperty("mcp.maxListResults", "25");
+        properties.setProperty("mcp.maxFeatures", "12");
+        properties.setProperty("mcp.allowWrites", "false");
 
         McpExtensionConfig config = new McpExtensionConfig(properties);
 
@@ -37,6 +41,8 @@ class McpExtensionConfigTest {
         assertFalse(config.isRequireAuthentication());
         assertTrue(config.isCorsEnabled());
         assertEquals(25, config.getMaxListResults());
+        assertEquals(12, config.getMaxFeatures());
+        assertFalse(config.isAllowWrites());
     }
 
     @Test
