@@ -1,0 +1,11 @@
+GNU GENERAL PUBLIC LICENSE
+Version 2, June 1991
+
+This GeoServer extension is licensed under the GNU General Public License
+v2.0 or later, the same license as GeoServer. That is required because the
+extension links GeoServer APIs (gs-main and related modules).
+
+The Python GeoServer MCP server in the parent repository remains MIT-licensed
+and is a separate artifact.
+
+Full license text: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html

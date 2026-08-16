@@ -23,6 +23,7 @@ A Model Context Protocol (MCP) server implementation that connects Large Languag
 ## 📋 Table of Contents
 
 - [Features](#-features)
+- [Deployment Options](#-deployment-options)
 - [Prerequisites](#-prerequisites)
 - [Installation](#️-installation)
   - [Docker Installation](#️-installation-docker)
@@ -59,6 +60,40 @@ A Model Context Protocol (MCP) server implementation that connects Large Languag
 - 🎨 Generate map visualizations
 - 🌐 Access OGC-compliant web services (WMS, WFS)
 - 🛠️ Easy integration with MCP-compatible clients
+
+## 🚀 Deployment Options
+
+GeoServer MCP can run in two ways. They share the same product idea (MCP tools over GeoServer) but are **separate artifacts**. The Python package is unchanged.
+
+```text
+                    GeoServer MCP
+                         │
+             ┌───────────┴───────────┐
+             │                       │
+      Python MCP Server       GeoServer Extension
+             │                       │
+             ▼                       ▼
+        GeoServer                GeoServer
+             │                       │
+             └───────────┬───────────┘
+                         │
+                    MCP Interface
+                         │
+                         ▼
+                     AI Agents
+```
+
+### Python MCP Server
+
+Run GeoServer MCP separately (pip, Docker, or Smithery). The process speaks MCP to the agent and calls the GeoServer REST API. This is the original, currently published deployment.
+
+See [Installation](#️-installation) below.
+
+### GeoServer Extension
+
+Install the GeoServer MCP Extension directly into GeoServer and expose a remote MCP endpoint at `/geoserver/mcp`. No Python sidecar is required. This is a proof of concept for GeoServer **2.28.x**.
+
+See [`extension/README.md`](extension/README.md) for architecture, installation, configuration, security, and client examples.
 
 ## 📋 Prerequisites
 
