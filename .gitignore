@@ -114,4 +114,7 @@ venv.bak/
 dmypy.json
 
 # VS Code
-.vscode/ 
+.vscode/
+
+# Local tutorials (not published with the repo)
+tutorials/ 

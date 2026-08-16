@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <!--
+    GeoServer loads every applicationContext.xml on the classpath at startup.
+    Beans that implement GeoServerFilter are then installed by SpringDelegatingFilter,
+    which is already mapped to /* in GeoServer's web.xml.
+  -->
+
+  <bean id="mcpExtensionConfig" class="org.geoservermcp.config.McpExtensionConfig">
+    <constructor-arg ref="resourceStore"/>
+  </bean>
+
+  <bean id="mcpCatalogAccess" class="org.geoservermcp.catalog.GeoServerCatalogAccess">
+    <constructor-arg ref="catalog"/>
+  </bean>
+
+  <bean id="mcpCatalogQueryService" class="org.geoservermcp.catalog.CatalogQueryService">
+    <constructor-arg ref="mcpCatalogAccess"/>
+    <constructor-arg ref="mcpExtensionConfig"/>
+  </bean>
+
+  <bean id="mcpToolRegistry" class="org.geoservermcp.tools.ToolRegistry">
+    <constructor-arg ref="mcpCatalogQueryService"/>
+  </bean>
+
+  <bean id="mcpProtocolHandler" class="org.geoservermcp.protocol.McpProtocolHandler">
+    <constructor-arg ref="mcpToolRegistry"/>
+    <constructor-arg ref="mcpExtensionConfig"/>
+  </bean>
+
+  <bean id="mcpGeoServerFilter" class="org.geoservermcp.web.McpGeoServerFilter">
+    <constructor-arg ref="mcpProtocolHandler"/>
+    <constructor-arg ref="mcpExtensionConfig"/>
+  </bean>
+
+  <bean id="gs-mcp-status" class="org.geoserver.platform.ModuleStatusImpl">
+    <constructor-arg index="0" value="gs-mcp"/>
+    <constructor-arg index="1" value="GeoServer MCP Extension"/>
+    <property name="component" value="MCP"/>
+    <property name="available" value="true"/>
+    <property name="enabled" value="true"/>
+    <property name="message" value="Streamable HTTP MCP endpoint at /mcp. Read-only catalog tools. Layer visibility follows GeoServer security."/>
+  </bean>
+</beans>
