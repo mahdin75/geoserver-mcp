@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import org.geoservermcp.catalog.CatalogQueryService;
 import org.geoservermcp.config.McpExtensionConfig;
+import org.geoservermcp.tools.LambdaTool;
 import org.geoservermcp.tools.ListLayersTool;
 import org.geoservermcp.tools.ListWorkspacesTool;
 import org.geoservermcp.tools.ToolRegistry;
@@ -192,5 +193,37 @@ class McpProtocolHandlerTest {
         JsonNode body = McpJson.mapper().readTree(response.body());
         assertTrue(body.path("result").isObject());
         assertTrue(body.path("error").isMissingNode());
+    }
+
+    @Test
+    void writeToolsAreHiddenAndRejectedWhenDisabled() throws Exception {
+        CatalogQueryService catalog = mock(CatalogQueryService.class);
+        ToolRegistry registry = new ToolRegistry(List.of(
+                new ListWorkspacesTool(catalog),
+                new LambdaTool(
+                        "create_workspace",
+                        "Create a workspace",
+                        org.geoservermcp.protocol.McpJson.mapper().createObjectNode(),
+                        args -> Map.of("status", "success"),
+                        true)));
+        McpExtensionConfig config = new McpExtensionConfig();
+        config.setAllowWrites(false);
+        McpProtocolHandler gated = new McpProtocolHandler(registry, config);
+
+        JsonNode listed = McpJson.mapper()
+                .readTree(gated.handlePost("{\"jsonrpc\":\"2.0\",\"id\":9,\"method\":\"tools/list\"}", "2025-03-26")
+                        .body())
+                .path("result")
+                .path("tools");
+        assertEquals(1, listed.size());
+        assertEquals("list_workspaces", listed.get(0).path("name").asText());
+
+        JsonNode call = McpJson.mapper()
+                .readTree(gated.handlePost(
+                                "{\"jsonrpc\":\"2.0\",\"id\":10,\"method\":\"tools/call\",\"params\":{\"name\":\"create_workspace\",\"arguments\":{\"workspace\":\"demo\"}}}",
+                                "2025-03-26")
+                        .body());
+        assertTrue(call.path("result").path("isError").asBoolean());
+        assertTrue(call.path("result").path("content").get(0).path("text").asText().contains("Write tools are disabled"));
     }
 }

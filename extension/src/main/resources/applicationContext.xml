@@ -15,6 +15,7 @@
 
   <bean id="mcpCatalogAccess" class="org.geoservermcp.catalog.GeoServerCatalogAccess">
     <constructor-arg ref="catalog"/>
+    <constructor-arg ref="geoServer"/>
   </bean>
 
   <bean id="mcpCatalogQueryService" class="org.geoservermcp.catalog.CatalogQueryService">
@@ -42,6 +43,6 @@
     <property name="component" value="MCP"/>
     <property name="available" value="true"/>
     <property name="enabled" value="true"/>
-    <property name="message" value="Streamable HTTP MCP endpoint at /mcp. Read-only catalog tools. Layer visibility follows GeoServer security."/>
+    <property name="message" value="Streamable HTTP MCP endpoint at /mcp. Catalog read and write tools (writes gated by mcp.allowWrites). Layer visibility follows GeoServer security."/>
   </bean>
 </beans>

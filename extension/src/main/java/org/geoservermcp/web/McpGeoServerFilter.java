@@ -58,6 +58,15 @@ public class McpGeoServerFilter implements GeoServerFilter, ExtensionPriority {
     }
 
     void handleMcp(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        RequestBaseUrl.set(request);
+        try {
+            handleMcpInternal(request, response);
+        } finally {
+            RequestBaseUrl.clear();
+        }
+    }
+
+    private void handleMcpInternal(HttpServletRequest request, HttpServletResponse response) throws IOException {
         applyCors(request, response);
         String protocolHeader = request.getHeader(PROTOCOL_VERSION_HEADER);
         String method = request.getMethod() == null ? "GET" : request.getMethod().toUpperCase(Locale.ROOT);

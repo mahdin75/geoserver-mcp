@@ -119,7 +119,7 @@ public class McpProtocolHandler {
         serverInfo.put("version", config.getServerVersion());
         result.put(
                 "instructions",
-                "Read-only GeoServer catalog tools. Visible layers and workspaces follow GeoServer security for the authenticated user. This endpoint does not expose administration, filesystem, or arbitrary REST access.");
+                "GeoServer catalog tools. Visible objects follow GeoServer security for the authenticated user. Write tools can be disabled with mcp.allowWrites=false. This endpoint does not expose user administration, filesystem uploads, reload, or arbitrary REST access.");
         return success(id, result, negotiated);
     }
 
@@ -127,6 +127,9 @@ public class McpProtocolHandler {
         ObjectNode result = McpJson.mapper().createObjectNode();
         ArrayNode toolsNode = result.putArray("tools");
         for (McpTool tool : tools.list()) {
+            if (tool.write() && !config.isAllowWrites()) {
+                continue;
+            }
             ObjectNode item = toolsNode.addObject();
             item.put("name", tool.name());
             item.put("description", tool.description());
@@ -143,6 +146,9 @@ public class McpProtocolHandler {
         McpTool tool = tools.get(name);
         if (tool == null) {
             return toolError(id, "Unknown tool: " + name, protocolVersion);
+        }
+        if (tool.write() && !config.isAllowWrites()) {
+            return toolError(id, "Write tools are disabled. Set mcp.allowWrites=true to enable.", protocolVersion);
         }
         JsonNode arguments = params.get("arguments");
         try {

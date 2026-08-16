@@ -34,6 +34,7 @@ public class McpExtensionConfig {
     public static final String DEFAULT_PATH = "/mcp";
     public static final String DEFAULT_PROTOCOL_VERSION = "2025-03-26";
     public static final int DEFAULT_MAX_LIST_RESULTS = 1000;
+    public static final int DEFAULT_MAX_FEATURES = 100;
 
     static final Set<String> SUPPORTED_PROTOCOL_VERSIONS =
             new LinkedHashSet<>(
@@ -49,6 +50,8 @@ public class McpExtensionConfig {
     private boolean corsEnabled = false;
     private String corsAllowOrigin = "*";
     private int maxListResults = DEFAULT_MAX_LIST_RESULTS;
+    private int maxFeatures = DEFAULT_MAX_FEATURES;
+    private boolean allowWrites = true;
     private String serverName = "geoserver-mcp-extension";
     private String serverVersion = readImplementationVersion();
 
@@ -99,6 +102,12 @@ public class McpExtensionConfig {
             applyProperty(
                     "maxListResults",
                     firstProperty("GEOSERVER_MCP_MAX_LIST_RESULTS", "mcp.maxListResults"));
+            applyProperty(
+                    "maxFeatures",
+                    firstProperty("GEOSERVER_MCP_MAX_FEATURES", "mcp.maxFeatures"));
+            applyProperty(
+                    "allowWrites",
+                    firstProperty("GEOSERVER_MCP_ALLOW_WRITES", "mcp.allowWrites"));
         } catch (RuntimeException e) {
             LOGGER.log(Level.FINE, "Could not read GeoServer/environment MCP overrides", e);
         }
@@ -114,6 +123,8 @@ public class McpExtensionConfig {
         applyProperty("cors.enabled", properties.getProperty("mcp.cors.enabled"));
         applyProperty("cors.allowOrigin", properties.getProperty("mcp.cors.allowOrigin"));
         applyProperty("maxListResults", properties.getProperty("mcp.maxListResults"));
+        applyProperty("maxFeatures", properties.getProperty("mcp.maxFeatures"));
+        applyProperty("allowWrites", properties.getProperty("mcp.allowWrites"));
     }
 
     private void applyProperty(String key, String value) {
@@ -128,6 +139,8 @@ public class McpExtensionConfig {
             case "cors.enabled" -> corsEnabled = parseBoolean(trimmed, corsEnabled);
             case "cors.allowOrigin" -> corsAllowOrigin = trimmed;
             case "maxListResults" -> maxListResults = parsePositiveInt(trimmed, maxListResults);
+            case "maxFeatures" -> maxFeatures = parsePositiveInt(trimmed, maxFeatures);
+            case "allowWrites" -> allowWrites = parseBoolean(trimmed, allowWrites);
             default -> LOGGER.fine("Ignoring unknown MCP config key: " + key);
         }
     }
@@ -229,6 +242,22 @@ public class McpExtensionConfig {
         this.maxListResults = maxListResults > 0 ? maxListResults : DEFAULT_MAX_LIST_RESULTS;
     }
 
+    public int getMaxFeatures() {
+        return maxFeatures;
+    }
+
+    public void setMaxFeatures(int maxFeatures) {
+        this.maxFeatures = maxFeatures > 0 ? maxFeatures : DEFAULT_MAX_FEATURES;
+    }
+
+    public boolean isAllowWrites() {
+        return allowWrites;
+    }
+
+    public void setAllowWrites(boolean allowWrites) {
+        this.allowWrites = allowWrites;
+    }
+
     public String getServerName() {
         return serverName;
     }
@@ -258,6 +287,10 @@ public class McpExtensionConfig {
                 + ", corsEnabled="
                 + corsEnabled
                 + ", maxListResults="
-                + maxListResults;
+                + maxListResults
+                + ", maxFeatures="
+                + maxFeatures
+                + ", allowWrites="
+                + allowWrites;
     }
 }
