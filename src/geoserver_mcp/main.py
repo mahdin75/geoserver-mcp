@@ -657,7 +657,7 @@ def get_datastores(workspace: str) -> list:
 # ============================
 
 @mcp.tool()
-def create_layergroup(workspace: str, name: str, layers: list, styles: list = None) -> dict:
+def create_layergroup(workspace: str, name: str, layers: list, styles: Optional[list] = None) -> dict:
     """Create a new layer group with specific layers and (optionally) styles.
     
     Args:
@@ -703,7 +703,7 @@ def get_layergroups(workspace: str) -> list:
     return geo.get_layergroups(workspace)
 
 @mcp.tool()
-def add_layer_to_layergroup(layer_name: str, layer_workspace: str, layergroup_name: str, layergroup_workspace: str = None) -> dict:
+def add_layer_to_layergroup(layer_name: str, layer_workspace: str, layergroup_name: str, layergroup_workspace: Optional[str] = None) -> dict:
     """Add a specific layer to a layer group.
     
     Args:
@@ -720,7 +720,7 @@ def add_layer_to_layergroup(layer_name: str, layer_workspace: str, layergroup_na
     return geo.add_layer_to_layergroup(layer_name, layer_workspace, layergroup_name, layergroup_workspace)
 
 @mcp.tool()
-def remove_layer_from_layergroup(layer_name: str, layer_workspace: str, layergroup_name: str, layergroup_workspace: str = None) -> dict:
+def remove_layer_from_layergroup(layer_name: str, layer_workspace: str, layergroup_name: str, layergroup_workspace: Optional[str] = None) -> dict:
     """Remove a layer from a group.
     
     Args:
@@ -752,7 +752,7 @@ def delete_layergroup(workspace: str, name: str) -> dict:
     return geo.delete_layergroup(name, workspace)
 
 @mcp.tool()
-def update_layergroup(layergroup_name: str, title: str = None, abstract_text: str = None, formats: str = 'html', metadata: list = None, keywords: list = None) -> dict:
+def update_layergroup(layergroup_name: str, title: Optional[str] = None, abstract_text: Optional[str] = None, formats: str = 'html', metadata: Optional[list] = None, keywords: Optional[list] = None) -> dict:
     """Update a layer group's details and configuration.
     
     Args:
@@ -776,7 +776,7 @@ def update_layergroup(layergroup_name: str, title: str = None, abstract_text: st
 # ============================
 
 @mcp.tool()
-def create_user(username: str, password: str, enabled: bool = True, properties: dict = None) -> dict:
+def create_user(username: str, password: str, enabled: bool = True, properties: Optional[dict] = None) -> dict:
     """Create a new user for GeoServer security.
 
     Args:
@@ -835,7 +835,7 @@ def modify_user(username: str, **kwargs) -> dict:
     return geo.modify_user(username, **kwargs)
 
 @mcp.tool()
-def create_usergroup(name: str, users: list = None) -> dict:
+def create_usergroup(name: str, users: Optional[list] = None) -> dict:
     """Create a new user group.
     
     Args:
@@ -1048,7 +1048,7 @@ def update_service(service: str, options: dict) -> str:
     return geo.update_service(service, **options)
 
 @mcp.tool()
-def publish_time_dimension_to_coveragestore(store_name: str = None, workspace: str = None, presentation: str = 'LIST', units: str = 'ISO8601', default_value: str = 'MINIMUM', content_type: str = 'application/xml; charset=UTF-8') -> dict:
+def publish_time_dimension_to_coveragestore(store_name: Optional[str] = None, workspace: Optional[str] = None, presentation: str = 'LIST', units: str = 'ISO8601', default_value: str = 'MINIMUM', content_type: str = 'application/xml; charset=UTF-8') -> dict:
     """Add or update a time dimension for a coverage store (for time series).
 
     Args:
@@ -1084,7 +1084,7 @@ def publish_style(layer_name: str, style_name: str, workspace: str) -> dict:
     return geo.publish_style(layer_name, style_name, workspace)
 
 @mcp.tool()
-def create_catagorized_featurestyle(style_name: str, column_name: str, column_distinct_values, workspace: str = None, color_ramp: str = 'tab20', geom_type: str = 'polygon') -> dict:
+def create_catagorized_featurestyle(style_name: str, column_name: str, column_distinct_values, workspace: Optional[str] = None, color_ramp: str = 'tab20', geom_type: str = 'polygon') -> dict:
     """Create a categorized style for features (polygon, line, point) using column values.
 
     Args:
@@ -1103,7 +1103,7 @@ def create_catagorized_featurestyle(style_name: str, column_name: str, column_di
     return geo.create_catagorized_featurestyle(style_name, column_name, column_distinct_values, workspace, color_ramp, geom_type)
 
 @mcp.tool()
-def create_classified_featurestyle(style_name: str, column_name: str, column_distinct_values, workspace: str = None, color_ramp: str = 'tab20', geom_type: str = 'polygon') -> dict:
+def create_classified_featurestyle(style_name: str, column_name: str, column_distinct_values, workspace: Optional[str] = None, color_ramp: str = 'tab20', geom_type: str = 'polygon') -> dict:
     """Create a classified style for features using distinct column values/classes.
 
     Args:
@@ -1137,7 +1137,7 @@ def create_coveragestyle(style_name: str, params: dict) -> dict:
     return geo.create_coveragestyle(style_name, **params)
 
 @mcp.tool()
-def create_outline_featurestyle(style_name: str, outline_color: str, workspace: str = None) -> dict:
+def create_outline_featurestyle(style_name: str, outline_color: str, workspace: Optional[str] = None) -> dict:
     """Create a simple outline-only style for features.
 
     Args:
@@ -1156,7 +1156,7 @@ def create_outline_featurestyle(style_name: str, outline_color: str, workspace: 
 from geo import Style
 
 @mcp.tool()
-def style_catagorize_xml(column_name: str, values: list, color_ramp: str = None, geom_type: str = 'polygon') -> str:
+def style_catagorize_xml(column_name: str, values: list, color_ramp: Optional[str] = None, geom_type: str = 'polygon') -> str:
     """Generate SLD for categorized vector style (SVG fill/block display).
     Args:
         column_name (str): Column for category.
@@ -1169,7 +1169,7 @@ def style_catagorize_xml(column_name: str, values: list, color_ramp: str = None,
     return Style.catagorize_xml(column_name, values, color_ramp, geom_type)
 
 @mcp.tool()
-def style_classified_xml(style_name: str, column_name: str, values: list, color_ramp: str = None, geom_type: str = 'polygon') -> str:
+def style_classified_xml(style_name: str, column_name: str, values: list, color_ramp: Optional[str] = None, geom_type: str = 'polygon') -> str:
     """Get SLD XML for classified vector style.
     Args:
         style_name (str): Name of style.
@@ -1183,7 +1183,7 @@ def style_classified_xml(style_name: str, column_name: str, values: list, color_
     return Style.classified_xml(style_name, column_name, values, color_ramp, geom_type)
 
 @mcp.tool()
-def style_coverage_style_colormapentry(color_ramp, min_value: float, max_value: float, number_of_classes: int = None):
+def style_coverage_style_colormapentry(color_ramp, min_value: float, max_value: float, number_of_classes: Optional[int] = None):
     """Generate color map entries for raster SLD.
     Args:
         color_ramp: List/dict of colors.
