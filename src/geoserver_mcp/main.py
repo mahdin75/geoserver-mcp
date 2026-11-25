@@ -116,7 +116,7 @@ def get_wfs_resource(request: str) -> Dict[str, Any]:
 # Tool implementations
 
 @mcp.tool()
-def list_workspaces() -> List[str]:
+def list_workspaces() -> Dict[str, List[str]]:
     """List available workspaces in GeoServer."""
     geo = get_geoserver()
     if geo is None:
@@ -1270,4 +1270,4 @@ def main():
         sys.exit(1)
 
 if __name__ == "__main__":
-    main() 
+    main()
