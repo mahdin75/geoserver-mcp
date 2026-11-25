@@ -543,7 +543,7 @@ def create_gpkg_datastore(workspace: str, name: str, file_path: str) -> dict:
     if geo is None:
         raise ValueError("Not connected to GeoServer")
     file_path = resolve_storage_path(file_path)
-    return geo.create_gpkg_datastore(workspace, name, file_path)
+    return geo.create_gpkg_datastore(path=file_path, store_name=name, workspace=workspace)
 
 @mcp.tool()
 def create_shp_datastore(workspace: str, name: str, file_path: str) -> dict:
@@ -560,7 +560,7 @@ def create_shp_datastore(workspace: str, name: str, file_path: str) -> dict:
     if geo is None:
         raise ValueError("Not connected to GeoServer")
     file_path = resolve_storage_path(file_path)
-    return geo.create_shp_datastore(workspace, name, file_path)
+    return geo.create_shp_datastore(path=file_path, store_name=name, workspace=workspace)
 
 @mcp.tool()
 def create_coveragestore(workspace: str, name: str, params: dict) -> dict:
